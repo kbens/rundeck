@@ -52,7 +52,7 @@ class RundeckPreauthenticationRequestHeaderFilter extends AbstractPreAuthenticat
 
         if(userNameHeader != null && !userNameHeader.trim().isEmpty()) {
             forwardedUser = request.getHeader(userNameHeader)
-            LOG.info("Request Header " + userNameHeader + ": " + forwardedUser);
+            LOG.info("Request Header - " + userNameHeader + ": " + forwardedUser);
         }
 
         LOG.info("Forwarded User: " + forwardedUser);
@@ -73,7 +73,7 @@ class RundeckPreauthenticationRequestHeaderFilter extends AbstractPreAuthenticat
             // PreauthenticatedAttributeRoleSource
             forwardedRoles = request.getHeader(rolesHeader);
             request.setAttribute(rolesAttribute, forwardedRoles);
-            LOG.info("Request Header " + rolesHeader + ": " + forwardedRoles);
+            LOG.info("Request Header - " + rolesHeader + ": " + forwardedRoles);
         }
 
         LOG.info("Forwarded Roles: " + forwardedRoles);
