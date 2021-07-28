@@ -48,11 +48,14 @@ class RundeckPreauthenticationRequestHeaderFilter extends AbstractPreAuthenticat
     @Override
     protected Object getPreAuthenticatedPrincipal(final HttpServletRequest request) {
         String forwardedUser = request.remoteUser  //in AJP this will be set by apache
-        if(userNameHeader != null) {
+        LOG.info("Request Attribute - REMOTE_USER: " + forwardedUser);
+
+        if(userNameHeader != null && !userNameHeader.trim().isEmpty()) {
             forwardedUser = request.getHeader(userNameHeader)
-            LOG.info("User header " + userNameHeader);
-            LOG.info("User / UUID recieved " + forwardedUser);
+            LOG.info("Request Header - " + userNameHeader + ": " + forwardedUser);
         }
+
+        LOG.info("Forwarded User: " + forwardedUser);
         return forwardedUser
     }
 
@@ -63,14 +66,18 @@ class RundeckPreauthenticationRequestHeaderFilter extends AbstractPreAuthenticat
 
     private Object addForwardedRolesToRequestAttribute(final HttpServletRequest request) {
         String forwardedRoles = request.getAttribute(rolesAttribute)
-        if (rolesAttribute != null && rolesHeader != null) {
+        LOG.info("Request Attribute - " + rolesAttribute + ": " + forwardedRoles);
+
+        if(rolesAttribute != null && rolesHeader != null && !rolesHeader.trim().isEmpty()) {
             // Get the roles sent by the proxy and add them onto the request as an attribute for
             // PreauthenticatedAttributeRoleSource
             forwardedRoles = request.getHeader(rolesHeader);
             request.setAttribute(rolesAttribute, forwardedRoles);
-            LOG.info("Roles header " + rolesHeader);
-            LOG.info("Roles received " + forwardedRoles);
+            LOG.info("Request Header - " + rolesHeader + ": " + forwardedRoles);
         }
+
+        LOG.info("Forwarded Roles: " + forwardedRoles);
         return forwardedRoles
     }
 }
+
